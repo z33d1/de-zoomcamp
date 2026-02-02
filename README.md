@@ -73,9 +73,9 @@ LIMIT 1
 ```
 
 
-# Misc
+## Misc
 
-## Build zones ingestion image
+### Build zones ingestion image
 ```bash
 docker build -t zones-ingestion:latest -f ./zones.Dockerfile .
 ```
@@ -85,7 +85,7 @@ docker build -t zones-ingestion:latest -f ./zones.Dockerfile .
 docker build -t trips-ingestion:latest -f ./trips.Dockerfile .
 ```
 
-## Run zones ingestion
+### Run zones ingestion
 ```bash
 docker run -it \
     --network=de-zoomcamp_default \
@@ -98,7 +98,7 @@ docker run -it \
     --target-table=zones
 ```
 
-## Run trips ingestion
+### Run trips ingestion
 ```bash
 docker run -it \
     --network=de-zoomcamp_default \
@@ -110,3 +110,43 @@ docker run -it \
     --pg-db=ny_taxi \
     --target-table=yellow_taxi_trips
 ```
+
+# Home Work 2
+
+## Question 1. Within the execution for Yellow Taxi data for the year 2020 and month 12: what is the uncompressed file size (i.e. the output file yellow_tripdata_2020-12.csv of the extract task)?
+To get unzipped file size add ls command after file was downloaded in extract task. [Link to the line.](./kestra/src/trips.yaml#L43)
+```bash
+ls -l {{render(vars.file)}}
+```
+
+<!-- ## Question 2. What is the rendered value of the variable file when the inputs taxi is set to green, year is set to 2020, and month is set to 04 during execution?
+```sql
+SELECT COUNT(*) as cnt
+FROM public.yellow_tripdata
+WHERE date_trunc('year',tpep_pickup_datetime) = TIMESTAMP '2020-01-01'
+``` -->
+
+## Question 3. How many rows are there for the Yellow Taxi data for all CSV files in the year 2020?
+```sql
+SELECT count(*) as cnt 
+FROM public.yellow_tripdata
+WHERE split_part(split_part(filename,'_',3),'-',1) = '2020'
+```
+
+## Question 4. How many rows are there for the Green Taxi data for all CSV files in the year 2020?
+```sql
+SELECT count(*) as cnt 
+FROM public.green_tripdata
+WHERE split_part(split_part(filename,'_',3),'-',1) = '2020'
+```
+
+## Question 5. How many rows are there for the Yellow Taxi data for the March 2021 CSV file?
+```sql
+SELECT count(*) as cnt 
+FROM public.yellow_tripdata
+WHERE split_part(split_part(filename,'_',3),'.',1) = '2021-03'
+```
+
+## Misc
+### How to backfill 2021 data?
+Utilize native Kestra backfill feature. Backfill range has to include the timestamp when cron fires.
