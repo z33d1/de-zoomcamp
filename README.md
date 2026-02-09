@@ -150,3 +150,75 @@ WHERE split_part(split_part(filename,'_',3),'.',1) = '2021-03'
 ## Misc
 ### How to backfill 2021 data?
 Utilize native Kestra backfill feature. Backfill range has to include the timestamp when cron fires.
+
+# Home Work 3
+## Misc
+Execute data ingestion py script
+```bash
+GCS_BUCKET_NAME=XXX GCP_PROJECT_ID=XXX GCS_BUCKET_KEY=XXX uv run ingestion/load_yellow_taxi_data.py
+```
+
+## Question 1. Counting records
+What is count of records for the 2024 Yellow Taxi Data?
+```sql
+SELECT count(*) as cnt
+FROM tmp.yellow_taxi
+```
+
+## Question 4. Counting zero fare trips
+```sql
+SELECT count(*) as cnt
+FROM tmp.yellow_taxi_table
+WHERE fare_amount = 0
+```
+
+## Question 5. Partitioning and clustering
+```sql
+CREATE OR REPLACE TABLE `tmp.yellow_taxi_table_optim`
+PARTITION BY date(tpep_dropoff_datetime)
+CLUSTER BY VendorID
+OPTIONS (
+  require_partition_filter = TRUE,
+  description = 'A yellow taxi trips table partitioned by tpep_dropoff_datetime date and clustered by VendorID'
+)
+AS (
+  SELECT * FROM tmp.yellow_taxi
+)
+```
+
+
+## Question 6. Partition benefits
+
+Write a query to retrieve the distinct VendorIDs between tpep_dropoff_datetime
+2024-03-01 and 2024-03-15 (inclusive)
+
+
+Use the materialized table you created earlier in your from clause and note the estimated bytes. Now change the table in the from clause to the partitioned table you created for question 5 and note the estimated bytes processed. What are these values? 
+```sql
+-- Count on optimized table
+SELECT COUNT(DISTINCT VendorID)
+FROM `tmp.yellow_taxi_table_optim`
+WHERE date_trunc(tpep_dropoff_datetime, DAY) >= TIMESTAMP '2024-03-01'
+AND date_trunc(tpep_dropoff_datetime, DAY) <= TIMESTAMP '2024-03-15'
+
+-- Count on nonoptimized materialized table
+SELECT COUNT(DISTINCT VendorID)
+FROM `tmp.yellow_taxi_table`
+WHERE date_trunc(tpep_dropoff_datetime, DAY) >= TIMESTAMP '2024-03-01'
+AND date_trunc(tpep_dropoff_datetime, DAY) <= TIMESTAMP '2024-03-15'
+```
+
+
+## Question 7. External table storage
+
+Where is the data stored in the External Table you created?
+
+- Big Query
+- Container Registry
+- GCP Bucket
+- Big Table
+
+## Question 8. Clustering best practices
+It is best practice in Big Query to always cluster your data:
+
+I assume that it is true, as the clustering feature is free and can speed up data scans even for small amount of data,
