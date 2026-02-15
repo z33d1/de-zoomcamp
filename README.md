@@ -222,3 +222,17 @@ Where is the data stored in the External Table you created?
 It is best practice in Big Query to always cluster your data:
 
 I assume that it is true, as the clustering feature is free and can speed up data scans even for small amount of data,
+
+# Home work 4
+
+## Question 3. Q3: Count of records in fct_monthly_zone_revenue?
+```bash
+duckdb taxi_rides_ny.duckdb "SELECT count(*) FROM prod.fct_monthly_zone_revenue"
+```
+
+## Question 4. Q4: Zone with highest revenue for Green taxis in 2020?
+[Reference](./sql/duckdb/annual_green_revenue_zone.sql)
+
+
+## Question 5. Q5: Total trips for Green taxis in October 2019? (1 point)
+[Reference](./sql/duckdb/total_trips_oct_19_green.sql)
