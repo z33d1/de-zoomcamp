@@ -1,0 +1,5 @@
+name: ny_taxi_pipeline
+schedule: "daily"
+start_date: "2021-01-01"
+default_connections:
+  duckdb: duckdb-default

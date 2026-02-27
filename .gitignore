@@ -1,3 +1,12 @@
 *.parquet
 uv.lock
 *.duckdb
+.bruin.yml
+logs/runs
+logs/*.log
+__pycache__/
+*.py[cod]
+logs/queries
+duckdb.db
+.vscode/mcp.json
+*.csv.gz
