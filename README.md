@@ -342,6 +342,7 @@ duckdb taxi_pipeline.duckdb "SELECT count(*) FILTER (WHERE payment_type='Credit'
 ```sql
 duckdb taxi_pipeline.duckdb "SELECT sum(tip_amt) FROM taxi_pipeline_dataset.nyc_taxi"
 ```
+<<<<<<< HEAD
 
 # Home work 6
 ## Question 1: Install Spark and PySpark
@@ -389,3 +390,5 @@ df.groupBy("Zone") \
     .orderBy("count") \
     .show()
 ```
+=======
+>>>>>>> cf4c2da (docs: add workshop 1 questionnaire)
