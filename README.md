@@ -325,3 +325,20 @@ You're running a Bruin pipeline for the first time on a new DuckDB database. Wha
 - `--truncate`
 
 ---
+
+# Workshop 1
+
+### Question 1: What is the start date and end date of the dataset?
+```sql
+duckdb taxi_pipeline.duckdb "SELECT min(trip_pickup_date_time), max(trip_dropoff_date_time) FROM taxi_pipeline_dataset.nyc_taxi"
+```
+
+### Question 2: What proportion of trips are paid with credit card?
+```sql
+duckdb taxi_pipeline.duckdb "SELECT count(*) FILTER (WHERE payment_type='Credit') / count(*) FROM taxi_pipeline_dataset.nyc_taxi"
+```
+
+### Question 3: What is the total amount of money generated in tips?
+```sql
+duckdb taxi_pipeline.duckdb "SELECT sum(tip_amt) FROM taxi_pipeline_dataset.nyc_taxi"
+```
