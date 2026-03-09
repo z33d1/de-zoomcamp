@@ -342,3 +342,50 @@ duckdb taxi_pipeline.duckdb "SELECT count(*) FILTER (WHERE payment_type='Credit'
 ```sql
 duckdb taxi_pipeline.duckdb "SELECT sum(tip_amt) FROM taxi_pipeline_dataset.nyc_taxi"
 ```
+
+# Home work 6
+## Question 1: Install Spark and PySpark
+
+
+## Question 2: Yellow November 2025
+
+
+
+## Question 3: Count records
+
+How many taxi trips were there on the 15th of November?
+
+Consider only trips that started on the 15th of November.
+
+```python
+df.filter(F.to_date("tpep_pickup_datetime") == F.to_date(F.lit("2025-11-15")))\
+    .count()
+```
+
+
+## Question 4: Longest trip
+
+What is the length of the longest trip in the dataset in hours?
+
+```python
+df = df.withColumn(
+    "trip_hours_diff",
+    (F.unix_timestamp("tpep_dropoff_datetime") - F.unix_timestamp("tpep_pickup_datetime")) / 3600
+)
+df.select(
+    F.max("trip_hours_diff")
+).show()
+```
+
+
+## Question 5: User Interface
+
+
+## Question 6: Least frequent pickup location zone
+
+```python
+df.groupBy("Zone") \
+    .count() \
+    .orderBy("count") \
+    .show()
+```
