@@ -10,3 +10,6 @@ logs/queries
 duckdb.db
 .vscode/mcp.json
 *.csv.gz
+*.csv
+*.crc
+data/spark_partititoned/_SUCCESS
